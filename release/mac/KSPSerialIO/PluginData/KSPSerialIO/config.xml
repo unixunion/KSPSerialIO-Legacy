@@ -3,5 +3,5 @@
     <string name="DefaultPort">/dev/tty.usbmodem411</string>
     <int name="BaudRate">115200</int>
     <int name="HandshakeDelay">0</int>
-    <bool name="NoDetect">1</bool>
+    <bool name="NoDetect">0</bool>
 </config>

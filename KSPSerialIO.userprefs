@@ -2,7 +2,7 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="KSPSerialIO/KSPIO.cs">
     <Files>
-      <File FileName="KSPSerialIO/KSPIO.cs" Line="34" Column="34" />
+      <File FileName="KSPSerialIO/KSPIO.cs" Line="23" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
