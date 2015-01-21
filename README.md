@@ -8,7 +8,7 @@ This is a rewire and patch of zitron-git's KSPSerialIO to use my PsimaxSerial dl
 So far I have only tested this on Mac, on which it works quite well.
 
 ## Config
-I have added some config defaults to the code base, Pleae create a config file as below to override.
+I have added some config defaults to the code base, Please create a config file as below to override.
 
 ### NoDetect
 NoDetect disable scanning of all connected serial devices for the KSPSerialIO Board. This forces attempted connection to the serial port mentioned in the config.
