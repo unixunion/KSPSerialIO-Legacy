@@ -7,10 +7,12 @@ This is a slight modification of Zitron's code base and *should* be cross-platfo
 This is a rewire and patch of zitron-git's KSPSerialIO to use my PsimaxSerial dll for hopefully cross-platform goodness. 
 
 ## Status
-So far I have only tested this on Mac, on which it works quite well.
+Appears to work on:
+ * Windows + KSP 0.90
+ * OSX + KSP 0.90
 
 ## Binaries
-There are binaries in release subdir for Mac at this point. 
+There are binaries in release subdir.
 
 ## Baud Rates
 Due to issues with .NET and Unity regarding Event callbacks, this version updates the Arduino via MonoBehavious->Update() which runs at about your screens refresh rate. Therefore please run your arduino at a hight speed like 115200 to avoid dragging down your system. 
