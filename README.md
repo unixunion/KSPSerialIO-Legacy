@@ -10,7 +10,7 @@ This is a rewire and patch of zitron-git's KSPSerialIO to use my PsimaxSerial dl
 So far I have only tested this on Mac, on which it works quite well.
 
 ## Binaries
-There are binaries in release subdir for Mac at this point. 
+There are binaries in release subdir compiled on Mac, I have not tested if they work on any other platform.
 
 ## Baud Rates
 Due to issues with .NET and Unity regarding Event callbacks, this version updates the Arduino via MonoBehavious->Update() which runs at about your screens refresh rate. Therefore please run your arduino at a hight speed like 115200 to avoid dragging down your system. 
