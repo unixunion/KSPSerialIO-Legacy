@@ -1,8 +1,8 @@
 ﻿<Properties StartupItem="KSPSerialIO/KSPSerialIO.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench ActiveDocument="KSPSerialIO/KSPIO.cs">
     <Files>
-      <File FileName="KSPSerialIO/KSPIO.cs" Line="23" Column="23" />
+      <File FileName="KSPSerialIO/KSPIO.cs" Line="38" Column="38" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
