@@ -637,21 +637,23 @@ namespace KSPSerialIO
         {
             CPacket = (ControlPacket)ByteArrayToStructure (buffer, CPacket);
 
-            VControls.SAS = BitMathByte (CPacket.MainControls, 7);
-            VControls.RCS = BitMathByte (CPacket.MainControls, 6);
-            VControls.Lights = BitMathByte (CPacket.MainControls, 5);
-            VControls.Gear = BitMathByte (CPacket.MainControls, 4);
-            VControls.Brakes = BitMathByte (CPacket.MainControls, 3);
-            VControls.Precision = BitMathByte (CPacket.MainControls, 2);
-            VControls.Abort = BitMathByte (CPacket.MainControls, 1);
-            VControls.Stage = BitMathByte (CPacket.MainControls, 0);
-            VControls.Throttle = (float)CPacket.Throttle / 1000.0F;
+            VControls.SAS = BitMathByte(CPacket.MainControls, 7);
+            VControls.RCS = BitMathByte(CPacket.MainControls, 6);
+            VControls.Lights = BitMathByte(CPacket.MainControls, 5);
+            VControls.Gear = BitMathByte(CPacket.MainControls, 4);
+            VControls.Brakes = BitMathByte(CPacket.MainControls, 3);
+            VControls.Precision = BitMathByte(CPacket.MainControls, 2);
+            VControls.Abort = BitMathByte(CPacket.MainControls, 1);
+            VControls.Stage = BitMathByte(CPacket.MainControls, 0);
             VControls.Pitch = (float)CPacket.Pitch / 1000.0F;
             VControls.Roll = (float)CPacket.Roll / 1000.0F;
             VControls.Yaw = (float)CPacket.Yaw / 1000.0F;
             VControls.TX = (float)CPacket.TX / 1000.0F;
             VControls.TY = (float)CPacket.TY / 1000.0F;
             VControls.TZ = (float)CPacket.TZ / 1000.0F;
+            VControls.WheelSteer = (float)CPacket.WheelSteer / 1000.0F;
+            VControls.Throttle = (float)CPacket.Throttle / 1000.0F;
+            VControls.WheelThrottle = (float)CPacket.WheelThrottle / 1000.0F;
 
             for (int j = 1; j <= 10; j++)
             {
