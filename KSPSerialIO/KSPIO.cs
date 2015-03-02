@@ -512,7 +512,7 @@ namespace KSPSerialIO
             }
         }
 
-        void Update ()
+        void FixedUpdate ()
         {
             ProcessData ();
         }
