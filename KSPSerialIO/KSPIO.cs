@@ -173,6 +173,10 @@ namespace KSPSerialIO
         public static int WheelThrottleEnable;
         public static double SASTol;
 
+        // buffer tunables for lower level serial library
+        public static int readBuffer;
+        public static int writeBuffer;
+
         void Awake()
         {
             //cfg["refresh"] = 0.08;
@@ -189,6 +193,11 @@ namespace KSPSerialIO
 
             BaudRate = cfg.GetValue<int> ("BaudRate", 38400);
             print ("KSPSerialIO: BaudRate = " + BaudRate.ToString ());
+
+            readBuffer = cfg.GetValue<int> ("ReadBuffer", 4096);
+            print ("KSPSerialIO: serial readBuffer = " + readBuffer.ToString ());
+            writeBuffer = cfg.GetValue<int> ("WriteBuffer", 2048);
+            print ("KSPSerialIO: serial writeBuffer = " + writeBuffer.ToString ());
 
             // disable the scanning for if you absolutly know the port!
             NoDetect = cfg.GetValue<bool> ("NoDetect", true);
@@ -289,6 +298,9 @@ namespace KSPSerialIO
                 Debug.Log ("KSPSerialIO: PortNumber: " + PortNumber);
                 Port.PortName = PortNumber;
             }
+
+            Port.WriteBufferSize = SettingsNStuff.writeBuffer;
+            Port.ReadBufferSize = SettingsNStuff.readBuffer;
 
             Debug.Log ("KSPSerialIO: Baud: " + SettingsNStuff.BaudRate);
             Port.BaudRate = SettingsNStuff.BaudRate;
@@ -431,9 +443,10 @@ namespace KSPSerialIO
                                 int k = 0;
                                 while (k < 15 && !DisplayFound)
                                 {
-                                    ProcessData(); // call to processData to deal with Events not working under Unity
                                     Thread.Sleep (100);
                                     sendPacket (HPacket); // send some additinal handshake packets
+                                    sendPacket (HPacket); // send some additinal handshake packets
+                                    ProcessData(); // call to processData to deal with Events not working under Unity     
                                     k++;
                                 }
 
@@ -512,7 +525,7 @@ namespace KSPSerialIO
             }
         }
 
-        void FixedUpdate ()
+        void Update ()
         {
             ProcessData ();
         }
@@ -733,7 +746,7 @@ namespace KSPSerialIO
             {
                 if (!KSPSerialPort.Port.IsOpen)
                 {
-                    ScreenMessages.PostScreenMessage ("Starting serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);
+                    ScreenMessages.PostScreenMessage ("KSPSerialIO: Starting serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);
 
                     try
                     {
@@ -748,7 +761,7 @@ namespace KSPSerialIO
                 }
                 else
                 {
-                    Debug.Log ("KSPSerialIO: serial port is not open");
+                    Debug.Log ("KSPSerialIO: serial port open");
                     ScreenMessages.PostScreenMessage ("Using serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);
                 }
 
@@ -781,6 +794,10 @@ namespace KSPSerialIO
             {
                 ScreenMessages.PostScreenMessage ("No display found", 10f, KSPIOScreenStyle);
             }
+        }
+
+        void FixedUpdate() {
+        
         }
 
         void Update ()
@@ -1481,9 +1498,9 @@ namespace KSPSerialIO
 
         #endregion
 
-        void FixedUpdate ()
-        {
-        }
+//        void FixedUpdate ()
+//        {
+//        }
 
         void OnDestroy ()
         {
