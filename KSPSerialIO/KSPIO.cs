@@ -67,6 +67,8 @@ namespace KSPSerialIO
         public byte MaxOverHeat;    //48  Max part overheat (% percent)
         public float MachNumber;    //49
         public float IAS;           //50  Indicated Air Speed
+        public byte CurrentStage;   //51  Current stage number
+        public byte TotalStage;     //52  TotalNumber of stages
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -119,7 +121,6 @@ namespace KSPSerialIO
         public float WheelSteer;
         public float Throttle;
         public float WheelThrottle;
-
     };
 
     public struct IOResource
@@ -389,7 +390,7 @@ namespace KSPSerialIO
             }
             else
             {
-                Debug.Log("KSPSerialIO: Version 0.17.3");
+                Debug.Log("KSPSerialIO: Version 0.17.4");
                 Debug.Log("KSPSerialIO: Getting serial ports...");
                 Debug.Log("KSPSerialIO: Output packet size: " + Marshal.SizeOf(VData).ToString() + "/255");
                 initializeDataPackets();
@@ -951,13 +952,20 @@ namespace KSPSerialIO
                     KSPSerialPort.VData.MachNumber = (float)ActiveVessel.mach;
                     KSPSerialPort.VData.IAS = (float)ActiveVessel.indicatedAirSpeed;
 
+                    KSPSerialPort.VData.CurrentStage = (byte)Staging.CurrentStage;
+                    KSPSerialPort.VData.TotalStage = (byte)Staging.StageCount;
+
                     
+
                     #region debugjunk
                     /*
+                    
+                    Debug.Log("KSPSerialIO: Stage " + KSPSerialPort.VData.CurrentStage.ToString() + ' ' +
+                        KSPSerialPort.VData.TotalStage.ToString()); 
                     Debug.Log("KSPSerialIO: Overheat " + KSPSerialPort.VData.MaxOverHeat.ToString());
                     Debug.Log("KSPSerialIO: Mach " + KSPSerialPort.VData.MachNumber.ToString());
                     Debug.Log("KSPSerialIO: IAS " + KSPSerialPort.VData.IAS.ToString());
-                     * 
+                    
                     Debug.Log("KSPSerialIO: SOI " + ActiveVessel.orbit.referenceBody.name + KSPSerialPort.VData.SOINumber.ToString());
                     
                     ScreenMessages.PostScreenMessage(KSPSerialPort.VData.OxidizerS.ToString() + "/" + KSPSerialPort.VData.OxidizerTotS +
@@ -1153,11 +1161,21 @@ namespace KSPSerialIO
         private byte GetMaxOverHeat(Vessel V)
         {
             byte percent = 0;
+            double sPercent = 0, iPercent = 0;
             double percentD = 0, percentP = 0;
 
             foreach (Part p in ActiveVessel.parts)
             {
-                percentP = p.temperature/p.maxTemp;
+                //internal temperature
+                iPercent = p.temperature/p.maxTemp;
+                //skin temperature
+                sPercent = p.skinTemperature/p.skinMaxTemp;
+
+                if (iPercent > sPercent)
+                    percentP = iPercent;
+                else
+                    percentP = sPercent;
+
                 if (percentD < percentP)
                     percentD = percentP;
             }
