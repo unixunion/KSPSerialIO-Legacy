@@ -1,12 +1,27 @@
-﻿<Properties StartupItem="KSPSerialIO/KSPSerialIO.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="KSPSerialIO/KSPIO.cs">
+﻿<Properties>
+  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/msbuild/15.0/bin/Microsoft.Common.CurrentVersion.targets">
     <Files>
-      <File FileName="KSPSerialIO/KSPIO.cs" Line="38" Column="38" />
+      <File FileName="KSPSerialIO/KSPIO.cs" Line="473" Column="46" />
+      <File FileName="KSPSerialIO/Properties/AssemblyInfo.cs" Line="1" Column="1" />
+      <File FileName="../../../../Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/msbuild/15.0/bin/Microsoft.Common.CurrentVersion.targets" Line="2003" Column="5" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="KSPSerialIO" expanded="True">
+            <Node name="KSPSerialIO" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="KSPIO.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
 </Properties>
