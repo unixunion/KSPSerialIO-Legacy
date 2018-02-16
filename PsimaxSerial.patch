@@ -1,0 +1,126 @@
+diff --git a/KSPSerialIO/KSPIO.cs b/KSPSerialIO/KSPIO.cs
+index 0cf9354..fb3f438 100644
+--- a/KSPSerialIO/KSPIO.cs
++++ b/KSPSerialIO/KSPIO.cs
+@@ -1 +1 @@
+-
++﻿
+@@ -11 +11 @@
+-using OpenNETCF.IO.Ports;
++using Psimax.IO.Ports;
+@@ -172,0 +173 @@ public class SettingsNStuff : MonoBehaviour
++        public static bool NoDetect;
+@@ -191,0 +193,4 @@ public class SettingsNStuff : MonoBehaviour
++        // buffer tunables for lower level serial library
++        public static int readBuffer;
++        public static int writeBuffer;
++
+@@ -200 +205 @@ void Awake()
+-            DefaultPort = cfg.GetValue<string>("DefaultPort");
++            DefaultPort = cfg.GetValue<string> ("DefaultPort", "/dev/tty.usbserial");
+@@ -206 +211 @@ void Awake()
+-            BaudRate = cfg.GetValue<int>("BaudRate");
++            BaudRate = cfg.GetValue<int> ("BaudRate", 38400);
+@@ -209 +214,10 @@ void Awake()
+-            HandshakeDelay = cfg.GetValue<int>("HandshakeDelay");
++            readBuffer = cfg.GetValue<int> ("ReadBuffer", 4096);
++            print ("KSPSerialIO: serial readBuffer = " + readBuffer.ToString ());
++            writeBuffer = cfg.GetValue<int> ("WriteBuffer", 2048);
++            print ("KSPSerialIO: serial writeBuffer = " + writeBuffer.ToString ());
++
++            // disable the scanning for if you absolutly know the port!
++            NoDetect = cfg.GetValue<bool> ("NoDetect", true);
++            print ("KSPSerialIO: NoDetect = " + NoDetect.ToString ());
++
++            HandshakeDelay = cfg.GetValue<int> ("HandshakeDelay", 200);
+@@ -250 +264 @@ public class KSPSerialPort : MonoBehaviour
+-        public static SerialPort Port;
++        public static SerialPort Port = new SerialPort ();
+@@ -301 +315,19 @@ private void Begin()
+-            Port = new SerialPort(PortNumber, SettingsNStuff.BaudRate, Parity.None, 8, StopBits.One);
++            if (SettingsNStuff.NoDetect) {
++                Debug.Log ("KSPSerialIO: setting port to the default");
++                PortNumber = SettingsNStuff.DefaultPort;
++                Debug.Log ("KSPSerialIO: PortNumber: " + PortNumber);
++                Port.PortName = PortNumber;
++            }
++
++            Port.WriteBufferSize = SettingsNStuff.writeBuffer;
++            Port.ReadBufferSize = SettingsNStuff.readBuffer;
++
++            Debug.Log ("KSPSerialIO: Baud: " + SettingsNStuff.BaudRate);
++            Port.BaudRate = SettingsNStuff.BaudRate;
++            Debug.Log ("KSPSerialIO: Parity None");
++            Port.Parity = Parity.None;
++            Debug.Log ("KSPSerialIO: DataBits 8");
++            Port.DataBits = 8;
++            Debug.Log ("KSPSerialIO: StopBits One");
++            Port.StopBits = StopBits.One;
++
+@@ -303 +335,7 @@ private void Begin()
+-            Port.ReceivedEvent += Port_ReceivedEvent;
++            Port.DataReceived += Port_ReceivedEvent;
++
++            if (!Port.IsOpen && SettingsNStuff.NoDetect) {
++                Debug.Log ("KSPSerialIO: opening port");
++                Port.Open ();
++            }
++
+@@ -363 +401 @@ void Awake()
+-            if (DisplayFound)
++            if (DisplayFound || SettingsNStuff.NoDetect)
+@@ -365,0 +404 @@ void Awake()
++                initializeDataPackets ();
+@@ -375,4 +414,2 @@ void Awake()
+-                try
+-                {
+-                    //Use registry hack to get a list of serial ports until we get system.io.ports
+-                    RegistryKey SerialCOMSKey = Registry.LocalMachine.OpenSubKey(@"HARDWARE\\DEVICEMAP\\SERIALCOMM\\");
++                try {
++                    String[] realports = SerialPort.GetPortNames ();
+@@ -382,9 +418,0 @@ void Awake()
+-                    //print("KSPSerialIO: receive threshold " + Port.ReceivedBytesThreshold.ToString());
+-
+-                    if (SerialCOMSKey == null)
+-                    {
+-                        Debug.Log("KSPSerialIO: Dude do you even win32 serial port??");
+-                    }
+-                    else
+-                    {
+-                        String[] realports = SerialCOMSKey.GetValueNames();  // get list of all serial devices
+@@ -408 +436 @@ void Awake()
+-                                PortNumber = (string)SerialCOMSKey.GetValue(PortName);
++                            PortNumber = PortName;
+@@ -419,0 +448 @@ void Awake()
++                                Debug.Log("KSPSerialIO: Opening port...");
+@@ -424 +453 @@ void Awake()
+-                                    Debug.Log("Error opening serial port " + Port.PortName + ": " + e.Message);
++                                Debug.Log ("KSPSerialIO: Error opening serial port " + Port.PortName + ": " + e.Message);
+@@ -428 +457 @@ void Awake()
+-                                if (Port.IsOpen && (SettingsNStuff.HandshakeDisable == 0))
++                            if (Port.IsOpen)
+@@ -441,0 +471,3 @@ void Awake()
++                                    sendPacket (HPacket); // send some additinal handshake packets
++                                    sendPacket (HPacket); // send some additinal handshake packets
++                                    Port_ReceivedEvent(null, null); // call to processData to deal with Events not working under Unity
+@@ -468 +499,0 @@ void Awake()
+-                    }
+@@ -494 +525 @@ private string readline()
+-        private void Port_ReceivedEvent(object sender, SerialReceivedEventArgs e)
++        private void Port_ReceivedEvent(object sender, SerialDataReceivedEventArgs e)
+@@ -527,0 +559,6 @@ private void Port_ReceivedEvent(object sender, SerialReceivedEventArgs e)
++        void Update ()
++        {
++            // call received data because event hooks not working under *nix
++            Port_ReceivedEvent (null, null);
++        }
++
+@@ -697 +734 @@ void OnDestroy()
+-                Port.ReceivedEvent -= Port_ReceivedEvent;
++                Port.DataReceived -= Port_ReceivedEvent;
+@@ -731 +768 @@ void Start()
+-            if (KSPSerialPort.DisplayFound)
++            if (KSPSerialPort.DisplayFound || SettingsNStuff.NoDetect)
+@@ -735 +772 @@ void Start()
+-                    ScreenMessages.PostScreenMessage("Starting serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);
++                    ScreenMessages.PostScreenMessage ("KSPSerialIO: Starting serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);

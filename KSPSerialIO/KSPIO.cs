@@ -830,10 +830,6 @@ namespace KSPSerialIO
             }
         }
 
-        void FixedUpdate() {
-
-        }
-
         void Update ()
         {
             if (FlightGlobals.ActiveVessel != null && KSPSerialPort.Port.IsOpen)
@@ -1734,9 +1730,9 @@ namespace KSPSerialIO
 
         #endregion
 
-//        void FixedUpdate ()
-//        {
-//        }
+       void FixedUpdate ()
+       {
+       }
 
         void OnDestroy ()
         {
