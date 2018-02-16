@@ -1,17 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/msbuild/15.0/bin/Microsoft.Common.CurrentVersion.targets">
+  <MonoDevelop.Ide.Workbench ActiveDocument="KSPSerialIO/KSPIO.cs">
     <Files>
-      <File FileName="KSPSerialIO/KSPIO.cs" Line="473" Column="46" />
-      <File FileName="KSPSerialIO/Properties/AssemblyInfo.cs" Line="1" Column="1" />
-      <File FileName="../../../../Library/Frameworks/Mono.framework/Versions/5.4.1/lib/mono/msbuild/15.0/bin/Microsoft.Common.CurrentVersion.targets" Line="2003" Column="5" />
+      <File FileName="KSPSerialIO/KSPIO.cs" Line="530" Column="39" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="KSPSerialIO" expanded="True">
-            <Node name="KSPSerialIO" expanded="True">
+            <Node name="KSPSerialIO" expanded="True" selected="True">
               <Node name="References" expanded="True" />
-              <Node name="KSPIO.cs" selected="True" />
             </Node>
           </Node>
         </State>

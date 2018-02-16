@@ -470,7 +470,7 @@ namespace KSPSerialIO
                                     Thread.Sleep (100);
                                     sendPacket (HPacket); // send some additinal handshake packets
                                     sendPacket (HPacket); // send some additinal handshake packets
-                                    Port_ReceivedEvent(null, null); // call to processData to deal with Events not working under Unity
+                                    Port_ReceivedEvent(); // call to processData to deal with Events not working under Unity
                                     k++;
                                 }
 
@@ -524,6 +524,11 @@ namespace KSPSerialIO
 
         private void Port_ReceivedEvent(object sender, SerialDataReceivedEventArgs e)
         {
+            Port_ReceivedEvent();
+        }
+
+        private void Port_ReceivedEvent()
+        {
             while (Port.BytesToRead > 0)
             {
                 if (processCOM ())
@@ -534,23 +539,23 @@ namespace KSPSerialIO
                         HPacket = (HandShakePacket)ByteArrayToStructure (buffer, HPacket);
                         Invoke ("HandShake", 0);
 
-                            if ((HPacket.M1 == 3) && (HPacket.M2 == 1) && (HPacket.M3 == 4))
-                            {
-                                DisplayFound = true;
-                            }
+                        if ((HPacket.M1 == 3) && (HPacket.M2 == 1) && (HPacket.M3 == 4))
+                        {
+                            DisplayFound = true;
+                        }
 
-                            else
-                            {
-                                DisplayFound = false;
-                            }
-                            break;
-                        case Cid:
-                            VesselControls();
-                            //Invoke("VesselControls", 0);
-                            break;
-                        default:
-                            Invoke("Unimplemented", 0);
-                            break;
+                        else
+                        {
+                            DisplayFound = false;
+                        }
+                        break;
+                    case Cid:
+                        VesselControls();
+                        //Invoke("VesselControls", 0);
+                        break;
+                    default:
+                        Invoke("Unimplemented", 0);
+                        break;
                     }
                 }
             }
@@ -559,7 +564,7 @@ namespace KSPSerialIO
         void Update ()
         {
             // call received data because event hooks not working under *nix
-            Port_ReceivedEvent (null, null);
+            Port_ReceivedEvent ();
         }
 
         private static bool processCOM ()

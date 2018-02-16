@@ -1,10 +1,10 @@
 //pins for LEDs
-#define GLED 5
+#define GLED 13
 #define YLED 6
 #define RLED 7
 #define SASLED 11
 #define RCSLED 12
-#define CG1LED 13
+#define CG1LED 5
 
 //pins for input
 #define SASPIN 8
@@ -176,7 +176,7 @@ VesselData VData;
 ControlPacket CPacket;
 
 void setup() {
-  Serial.begin(38400);
+  Serial.begin(115200);
 
   initLEDS();
   InitTxPackets();

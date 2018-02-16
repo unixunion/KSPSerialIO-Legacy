@@ -1,8 +1,10 @@
+#include <U8glib.h>
+
 #include <SPI.h>
 #include <Wire.h>
 //#include <Adafruit_GFX.h>
 //#include <Adafruit_SSD1306.h>
-#include <u8glib.h>
+
 #include <pgfx.h>
 #include <MemoryFree.h>
 
