@@ -1,5 +1,5 @@
 diff --git a/KSPSerialIO/KSPIO.cs b/KSPSerialIO/KSPIO.cs
-index 0cf9354..fb3f438 100644
+index 0cf9354..26856db 100644
 --- a/KSPSerialIO/KSPIO.cs
 +++ b/KSPSerialIO/KSPIO.cs
 @@ -1 +1 @@
@@ -102,25 +102,30 @@ index 0cf9354..fb3f438 100644
 @@ -441,0 +471,3 @@ void Awake()
 +                                    sendPacket (HPacket); // send some additinal handshake packets
 +                                    sendPacket (HPacket); // send some additinal handshake packets
-+                                    Port_ReceivedEvent(null, null); // call to processData to deal with Events not working under Unity
++                                    Port_ReceivedEvent(); // call to processData to deal with Events not working under Unity
 @@ -468 +499,0 @@ void Awake()
 -                    }
-@@ -494 +525 @@ private string readline()
+@@ -494 +525,6 @@ private string readline()
 -        private void Port_ReceivedEvent(object sender, SerialReceivedEventArgs e)
 +        private void Port_ReceivedEvent(object sender, SerialDataReceivedEventArgs e)
-@@ -527,0 +559,6 @@ private void Port_ReceivedEvent(object sender, SerialReceivedEventArgs e)
++        {
++            Port_ReceivedEvent();
++        }
++
++        private void Port_ReceivedEvent()
+@@ -527,0 +564,6 @@ private void Port_ReceivedEvent(object sender, SerialReceivedEventArgs e)
 +        void Update ()
 +        {
 +            // call received data because event hooks not working under *nix
-+            Port_ReceivedEvent (null, null);
++            Port_ReceivedEvent ();
 +        }
 +
-@@ -697 +734 @@ void OnDestroy()
+@@ -697 +739 @@ void OnDestroy()
 -                Port.ReceivedEvent -= Port_ReceivedEvent;
 +                Port.DataReceived -= Port_ReceivedEvent;
-@@ -731 +768 @@ void Start()
+@@ -731 +773 @@ void Start()
 -            if (KSPSerialPort.DisplayFound)
 +            if (KSPSerialPort.DisplayFound || SettingsNStuff.NoDetect)
-@@ -735 +772 @@ void Start()
+@@ -735 +777 @@ void Start()
 -                    ScreenMessages.PostScreenMessage("Starting serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);
 +                    ScreenMessages.PostScreenMessage ("KSPSerialIO: Starting serial port " + KSPSerialPort.Port.PortName, 10f, KSPIOScreenStyle);
